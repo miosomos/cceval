@@ -7,7 +7,7 @@ paper "[CrossCodeEval: A Diverse and Multilingual Benchmark for Cross-File Code 
 
 - Uncompress the CrossCodeEval data via `tar -xvJf data/crosscodeeval_data.tar.xz -C data/`
     - The data contains {baseline, retrieval, retrieval w/ ref.} setting x {bm25, UniXCoder, OpenAI Ada} retriever.
-    - **Please email us if you need the raw data.**
+    - **Please [email us](mailto:y.robin.ding@gmail.com) if you need the raw data.**
 - Install dependencies via `pip install -r requirements.txt`
 - Build tree sitter via `bash scripts/build_treesitter.sh`
 
@@ -137,7 +137,7 @@ python scripts/eval.py \
 }
 ```
 ## Questions
-Please feel free to email us (email addresses in the [paper](https://arxiv.org/pdf/2310.11248.pdf)). You may also submit an issue in this repo.
+Please feel free to email us. You may also submit an issue in this repo.
 
 ## Security
 
