@@ -8,7 +8,7 @@ paper "[CrossCodeEval: A Diverse and Multilingual Benchmark for Cross-File Code 
 - Uncompress the CrossCodeEval data via `tar -xvJf data/crosscodeeval_data.tar.xz -C data/`
     - The data contains {baseline, retrieval, retrieval w/ ref.} setting x {bm25, UniXCoder, OpenAI Ada} retriever.
     - **Please [email us](mailto:y.robin.ding@gmail.com) if you need the raw data.**
-- Install dependencies via `pip install -r requirements.txt`
+- Install dependencies via `uv pip install -r requirements.txt`
 - Build tree sitter via `bash scripts/build_treesitter.sh`
 
 
@@ -27,7 +27,7 @@ export model=bigcode/starcoder2-3b
 export language=python
 export task=line_completion_rg1_unixcoder_cosine_sim
 export output_dir=./tmp/crosscodeeval_testrun/
-python scripts/vllm_inference.py \
+uv run python scripts/vllm_inference.py \
   --tp $gpus \
   --task $task \
   --language $language \
@@ -92,13 +92,12 @@ export model=gpt-3.5-turbo-0125
 export language=python
 export task=line_completion_rg1_unixcoder_cosine_sim
 export output_dir=./tmp/crosscodeeval_openai_testrun/
-python scripts/openai_inference.py \
+uv run python scripts/openai_inference.py \
   --task $task \
   --language $language \
   --model $model \
   --output_dir $output_dir \
   --use_crossfile_context 
-
 ```
 
 
@@ -117,12 +116,6 @@ python scripts/eval.py \
   --language $language \
   --only_compute_metric
 ```
-
-
-
-
-
-
 
 ## Citation
 

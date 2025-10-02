@@ -1,7 +1,7 @@
 torch
 transformers
 datasets
-tree-sitter
+tree-sitter==0.20.0
 timeout-decorator
 bitsandbytes
 accelerate

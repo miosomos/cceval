@@ -181,9 +181,31 @@ def get_openai_responses(
     """Get OpenAI responses to all samples in data, store in out_path,
     and return list of task ids that were skipped due to some errors"""
     tokenizer = tiktoken.encoding_for_model(args.model)
+
+    completed_tasks = set()
+    try:
+        with open(out_path, 'r') as f:
+            for line in f:
+                try:
+                    completed_tasks.add(json.loads(line)['task_id'])
+                except (json.JSONDecodeError, KeyError):
+                    # Ignora líneas corruptas o que no tengan 'task_id'
+                    continue
+        print(f"Resumiendo: {len(completed_tasks)} tareas ya completadas y serán omitidas.")
+    except FileNotFoundError:
+        print("Archivo de salida no encontrado. Empezando un nuevo archivo.")
+
+    tasks_to_process = [d for d in data if d['metadata']['task_id'] not in completed_tasks]
+
+    if not tasks_to_process:
+        print("¡No hay tareas nuevas que procesar! Todo está completo.")
+        return []
+
+    print(f"Procesando {len(tasks_to_process)} tareas nuevas.")
+
     skipped = []
-    with open(out_path, 'w') as f:
-        for d in tqdm(data):
+    with open(out_path, 'a') as f:
+        for d in tqdm(tasks_to_process):
             try:
                 prompt, response = get_openai_response(
                     d, tokenizer, args

@@ -140,4 +140,5 @@ cython_debug/
 .DS_Store
 ts_package/
 build/
-
+data/
+tmp/
