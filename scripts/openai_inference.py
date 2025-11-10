@@ -206,6 +206,8 @@ def get_openai_responses(
     print(f"Procesando {len(tasks_to_process)} tareas nuevas.")
 
     skipped = []
+    tokens_out_path = out_path.replace('.jsonl', '_tokens.jsonl')
+
     with open(out_path, 'a') as f:
         for d in tqdm(tasks_to_process):
             try:
@@ -223,6 +225,30 @@ def get_openai_responses(
                 d['prompt_used'] = prompt  # records the augmented prompt
                 d['task_id'] = d['metadata']['task_id']  # adding for compatibility with eval script
                 print(json.dumps(d), file=f, flush=True)
+
+                # Extraer conteos de tokens desde response.usage
+                usage = None
+                if hasattr(response, 'usage'):
+                    usage = response.usage
+                elif isinstance(response, dict):
+                    usage = response.get('usage')
+
+                prompt_tokens = None
+                completion_tokens = None
+                if usage is not None:
+                    if isinstance(usage, dict):
+                        prompt_tokens = usage.get('prompt_tokens')
+                        completion_tokens = usage.get('completion_tokens')
+                    else:
+                        prompt_tokens = getattr(usage, 'prompt_tokens', None)
+                        completion_tokens = getattr(usage, 'completion_tokens', None)
+
+                tokens_record = {
+                    'task_id': d['task_id'],
+                    'input_tokens': prompt_tokens,
+                    'output_tokens': completion_tokens
+                }
+                print(json.dumps(tokens_record), file=tokens_f, flush=True)
             else:
                 skipped.append(d['metadata']['task_id'])
                 print(f'Skipped {d["metadata"]["task_id"]}')
