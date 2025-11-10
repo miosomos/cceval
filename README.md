@@ -5,6 +5,7 @@ paper "[CrossCodeEval: A Diverse and Multilingual Benchmark for Cross-File Code 
 
 ## Requirements
 
+- Development tools for building tree-sitter parsers (e.g., `build-essential` on Ubuntu).
 - Uncompress the CrossCodeEval data via `tar -xvJf data/crosscodeeval_data.tar.xz -C data/`
     - The data contains {baseline, retrieval, retrieval w/ ref.} setting x {bm25, UniXCoder, OpenAI Ada} retriever.
     - **Please [email us](mailto:y.robin.ding@gmail.com) if you need the raw data.**
