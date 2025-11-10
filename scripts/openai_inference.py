@@ -24,7 +24,9 @@ SYS_PROMPT = 'You are Codex, a code completion language model. Continue the code
 
 openai_api_key = os.environ.get("OPENAI_API_KEY")
 assert openai_api_key is not None, "Please set openai_api_key with your API key"
-client = OpenAI()
+client = OpenAI(
+    base_url=os.environ.get("OPENAI_API_URL"),
+)
 
 
 def query(
