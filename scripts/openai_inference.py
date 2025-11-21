@@ -208,7 +208,7 @@ def get_openai_responses(
     skipped = []
     tokens_out_path = out_path.replace('.jsonl', '_tokens.jsonl')
 
-    with open(out_path, 'a') as f:
+    with open(out_path, 'a') as f, open(tokens_out_path, 'a') as tokens_f:
         for d in tqdm(tasks_to_process):
             try:
                 prompt, response = get_openai_response(
