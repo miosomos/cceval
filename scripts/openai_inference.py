@@ -182,7 +182,12 @@ def get_openai_responses(
 ) -> List[str]:
     """Get OpenAI responses to all samples in data, store in out_path,
     and return list of task ids that were skipped due to some errors"""
-    tokenizer = tiktoken.encoding_for_model(args.model)
+    # Get tokenizer for model, otherwise tiktoken may use a default model
+    try:
+        tokenizer = tiktoken.encoding_for_model(args.model)
+    except KeyError:
+        print(f"Warning: model {args.model} not found. Using cl100k_base encoding.")
+        tokenizer = tiktoken.get_encoding("cl100k_base")
 
     completed_tasks = set()
     try:
